@@ -49,6 +49,11 @@
 }
 
 :root {
+  /* Font Family Definitions */
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-heading: "Geist", system-ui, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
@@ -84,6 +89,11 @@
 }
 
 .dark {
+  /* Font Family Definitions (Dark Mode) */
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-heading: "Geist", system-ui, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
   --background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.205 0 0);
@@ -126,5 +136,9 @@
   }
   html {
     @apply font-mono;
+  }
+
+  h1 {
+    @apply font-heading scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl;
   }
 }

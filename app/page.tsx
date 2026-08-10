@@ -49,7 +49,7 @@ Because technology is meant to serve us.
               <CardHeader>
                 <CardTitle>Notes</CardTitle>
                 <CardDescription className="md:text-base">
-                  Capture ideas, thoughts, information, and insights you want to remember.
+                  Capture ideas, thoughts, information and insights you want to remember.
                 </CardDescription>
               </CardHeader>
             </Card>

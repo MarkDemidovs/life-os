@@ -41,10 +41,10 @@ export async function deleteTask(taskId: string) {
         throw new Error("Invalid task data");
     }
 
- await db.delete(tasks).where(
-    and(
-      eq(tasks.id, Number(result.data.taskId)),
-      eq(tasks.userId, userId)
-    )
-  );
+    await db.delete(tasks).where(
+        and(
+            eq(tasks.id, Number(result.data.taskId)),
+            eq(tasks.userId, userId)
+        )
+    );
 }

@@ -1,9 +1,9 @@
 "use server"
 import { db } from "@/db";
-import { taskSchema } from "@/lib/schemas";
+import { taskSchema, deleteTaskSchema } from "@/lib/schemas";
 import { tasks } from "@/db/schema";
 import { auth } from "@clerk/nextjs/server";
-import { eq } from "drizzle-orm";
+import { eq, and } from "drizzle-orm";
 
 export async function getTasks() {
     const { userId } = await auth.protect();
@@ -27,4 +27,24 @@ export async function createTask(formData: FormData) {
         taskName: result.data.taskName,
         userId
     })
+}
+
+export async function deleteTask(taskId: string) {
+    const { userId } = await auth.protect();
+
+    const result = deleteTaskSchema.safeParse({
+        taskId
+    })
+
+    if (!result.success) {
+        console.error(result.error);
+        throw new Error("Invalid task data");
+    }
+
+ await db.delete(tasks).where(
+    and(
+      eq(tasks.id, Number(result.data.taskId)),
+      eq(tasks.userId, userId)
+    )
+  );
 }

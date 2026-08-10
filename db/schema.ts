@@ -7,4 +7,5 @@ export const tasks = pgTable("tasks", {
     userId: text("user_id").notNull()
 })
 
+
 export type Task = typeof tasks.$inferSelect;

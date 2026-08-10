@@ -11,7 +11,7 @@ export default function Home() {
     <main className="flex min-h-screen flex-col justify-center px-6">
       <div className="mx-auto w-full max-w-6xl">
 
-        <div className="mb-8 md:mb-12">
+        <div className="mb-8 md:mb-6">
           <h1 className="font-heading text-4xl tracking-tight md:text-6xl">
             LIFE OS
           </h1>

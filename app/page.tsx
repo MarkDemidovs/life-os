@@ -26,7 +26,7 @@ Because technology is meant to serve us.
             <Card className="h-full transition-colors hover:bg-accent md:min-h-48">
               <CardHeader>
                 <CardTitle>Tasks</CardTitle>
-                <CardDescription>
+                <CardDescription className="md:text-base">
                   Keep track of what needs to get done.
                 </CardDescription>
               </CardHeader>
@@ -37,7 +37,7 @@ Because technology is meant to serve us.
             <Card className="h-full transition-colors hover:bg-accent md:min-h-48">
               <CardHeader>
                 <CardTitle>Habits</CardTitle>
-                <CardDescription>
+                <CardDescription className="md:text-base">
                   Build consistency and track daily habits you want to maintain.
                 </CardDescription>
               </CardHeader>
@@ -48,7 +48,7 @@ Because technology is meant to serve us.
             <Card className="h-full transition-colors hover:bg-accent md:min-h-48">
               <CardHeader>
                 <CardTitle>Notes</CardTitle>
-                <CardDescription>
+                <CardDescription className="md:text-base">
                   Capture ideas, thoughts, information, and insights you want to remember.
                 </CardDescription>
               </CardHeader>

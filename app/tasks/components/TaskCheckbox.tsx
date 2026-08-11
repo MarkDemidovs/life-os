@@ -1,6 +1,7 @@
 "use client";
 
-import { changeStatus } from "@/app/actions";
+import { changeStatus } from "../../actions";
+
 
 export default function TaskCheckbox({
     id,

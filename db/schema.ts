@@ -8,4 +8,4 @@ export const tasks = pgTable("tasks", {
 })
 
 
-export type Task = typeof tasks.$inferSelect;
+export type TaskType = typeof tasks.$inferSelect;

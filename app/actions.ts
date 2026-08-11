@@ -48,3 +48,8 @@ export async function deleteTask(taskId: string) {
         )
     );
 }
+
+export async function changeStatus(id:number, isCompleted: boolean) {
+    await db.update(tasks).set({ isCompleted }).where(eq(tasks.id, id));
+
+}

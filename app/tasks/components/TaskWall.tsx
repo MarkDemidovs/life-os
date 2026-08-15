@@ -10,7 +10,8 @@ export default function TaskWall({ initialTasks }: { initialTasks: TaskType[]}) 
     const {data: tasks} = useQuery({
         queryKey: ["tasks"],
         queryFn: getTasks,
-        initialData: initialTasks
+        initialData: initialTasks,
+        staleTime: 1000*60,
     })
 
     return (

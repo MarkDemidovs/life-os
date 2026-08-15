@@ -3,12 +3,12 @@ import { db } from "@/db";
 import { taskSchema, deleteTaskSchema } from "@/lib/schemas";
 import { tasks } from "@/db/schema";
 import { auth } from "@clerk/nextjs/server";
-import { eq, and } from "drizzle-orm";
+import { eq, and, asc} from "drizzle-orm";
 
 export async function getTasks() {
     const { userId } = await auth.protect();
 
-    return await db.select().from(tasks).where(eq(tasks.userId, userId));
+    return await db.select().from(tasks).where(eq(tasks.userId, userId)).orderBy(asc(tasks.id));
 }
 
 export async function createTask(formData: FormData) {

@@ -12,10 +12,12 @@ export default async function Tasks() {
   const initialTasks = await db.select().from(tasks).where(eq(tasks.userId, userId)).orderBy(asc(tasks.id));
 
   return (
-    <main>
+    <main className="w-full h-full flex flex-col items-center w-full h-screen justify-center">
       <TaskWall initialTasks={initialTasks} />
 
-      <CreateTaskComponent />
+      <div className="mt-4">
+        <CreateTaskComponent />
+      </div>
     </main>
   );
 }

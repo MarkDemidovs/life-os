@@ -21,24 +21,20 @@ export default function CreateTaskComponent() {
 
             const newTaskName = formData.get("taskName") as string;
 
-            // 4. Optimistically update the cache with a temporary ID
             queryClient.setQueryData<Task[]>(["tasks"], (old = []) => [
                 ...old,
                 { id: Date.now(), taskName: newTaskName },
             ]);
 
-            // 5. Return context containing the snapshot
             return { previousTasks };
         },
 
-        // 6. If the mutation fails, roll back to the previous snapshot
         onError: (_err, _variables, context) => {
             if (context?.previousTasks) {
                 queryClient.setQueryData(["tasks"], context.previousTasks);
             }
         },
 
-        // 7. Always refetch after error or success to sync with the server
         onSettled: () => {
             queryClient.invalidateQueries({ queryKey: ["tasks"] });
         },
@@ -59,7 +55,7 @@ export default function CreateTaskComponent() {
                 className="border-2 p-1 rounded"
             />
             <button
-                className="border-2 rounded p-1"
+                className="border-2 rounded p-1 transition-colors hover:bg-accent"
                 disabled={createTaskMutation.isPending}
             >
                 {createTaskMutation.isPending ? "Posting..." : "Post"}

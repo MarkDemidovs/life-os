@@ -52,10 +52,10 @@ export default function CreateTaskComponent() {
             <input
                 name="taskName"
                 type="text"
-                className="border-2 p-1 rounded"
+                className="border-2 p-1 rounded w-72"
             />
             <button
-                className="border-2 rounded p-1 transition-colors hover:bg-accent"
+                className="border-2 rounded p-1 transition-colors hover:bg-accent w-24"
                 disabled={createTaskMutation.isPending}
             >
                 {createTaskMutation.isPending ? "Posting..." : "Post"}

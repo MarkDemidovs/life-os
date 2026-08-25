@@ -15,7 +15,7 @@ export default async function Tasks() {
     <main className="w-full h-full flex flex-col items-center w-full h-screen justify-center">
       <TaskWall initialTasks={initialTasks} />
 
-      <div className="mt-4">
+      <div className="mt-6">
         <CreateTaskComponent />
       </div>
     </main>

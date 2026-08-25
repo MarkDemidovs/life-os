@@ -16,7 +16,7 @@ export default function TaskWall({ initialTasks }: { initialTasks: TaskType[]}) 
 
     return (
         <div className="w-full">
-            <div className="flex flex-col justify-center items-center gap-3">
+            <div className="flex flex-col justify-center items-center gap-2">
                 {tasks.map((task) => (
                     <Task key={task.id} id={task.id} title={task.taskName} status={task.isCompleted} />
                 ))}

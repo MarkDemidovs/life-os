@@ -35,9 +35,6 @@ export default function CreateTaskComponent() {
             }
         },
 
-        onSettled: () => {
-            queryClient.invalidateQueries({ queryKey: ["tasks"] });
-        },
     });
 
     return (
@@ -52,10 +49,10 @@ export default function CreateTaskComponent() {
             <input
                 name="taskName"
                 type="text"
-                className="border-2 p-1 rounded w-72"
+                className="border-2 p-1 rounded"
             />
             <button
-                className="border-2 rounded p-1 transition-colors hover:bg-accent w-24"
+                className="border-2 rounded p-1 transition-colors hover:bg-accent"
                 disabled={createTaskMutation.isPending}
             >
                 {createTaskMutation.isPending ? "Posting..." : "Post"}

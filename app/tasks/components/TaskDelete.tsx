@@ -5,7 +5,7 @@ import { TaskType } from "@/db/schema";
 
 export default function TaskDelete() {
     return (
-        <button className="ml-10">
+        <button className="ml-10 font-heading">
             Delete
         </button>
     )

@@ -8,12 +8,19 @@ export default function Task({
     id,
     title,
     status,
+    onDelete,
 }: {
     id: number;
     title: string;
     status: boolean;
+    onDelete: (taskId: number) => void;
 }) {
     const [isDeleting, setIsDeleting] = useState(false);
+
+    const handleDelete = () => {
+        setIsDeleting(true);
+        onDelete(id);
+    };
 
     return (
         <div
@@ -41,7 +48,7 @@ export default function Task({
 
                 <TaskDelete
                     taskId={id}
-                    onDeleteStart={() => setIsDeleting(true)}
+                    onDeleteStart={handleDelete}
                 />
             </div>
         </div>

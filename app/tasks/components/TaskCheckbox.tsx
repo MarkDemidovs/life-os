@@ -3,6 +3,7 @@
 import { changeStatus } from "../../actions";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { TaskType } from "@/db/schema";
+
 export default function TaskCheckbox({
     id,
     status,
@@ -21,32 +22,46 @@ export default function TaskCheckbox({
                 queryKey: ["tasks"],
             });
 
-            const previousTasks = queryClient.getQueryData(["tasks"]);
+            const previousTasks =
+                queryClient.getQueryData<TaskType[]>(["tasks"]);
 
-            queryClient.setQueryData(["tasks"], (old: TaskType[]) =>
-                old.map((task) =>
-                    task.id === id ? { ...task, isCompleted: newStatus } : task
-                )
-            )
+            queryClient.setQueryData<TaskType[]>(
+                ["tasks"],
+                (old = []) =>
+                    old.map((task) =>
+                        task.id === id
+                            ? {
+                                  ...task,
+                                  isCompleted: newStatus,
+                              }
+                            : task
+                    )
+            );
+
             return { previousTasks };
         },
+
         onError: (_error, _newStatus, context) => {
             queryClient.setQueryData(
                 ["tasks"],
                 context?.previousTasks
-            )
+            );
         },
+
         onSettled: () => {
             queryClient.invalidateQueries({
                 queryKey: ["tasks"],
-            })
-        }
-    })
+            });
+        },
+    });
+
     return (
         <input
             type="checkbox"
-            checked={status}
-            onChange={(e) => optimisticMutation.mutate(e.target.checked)}
+            checked={status ?? false}
+            onChange={(e) =>
+                optimisticMutation.mutate(e.target.checked)
+            }
         />
     );
 }

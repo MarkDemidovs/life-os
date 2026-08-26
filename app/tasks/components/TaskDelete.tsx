@@ -3,7 +3,7 @@
 import { deleteTask } from "@/app/actions";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
-import { Task } from "@/app/types";
+import { TaskType } from "@/db/schema";
 
 export default function TaskDelete({
     taskId,
@@ -17,29 +17,26 @@ export default function TaskDelete({
     const deleteTaskMutation = useMutation({
         mutationFn: deleteTask,
 
-        onMutate: async (taskId) => {
-            // Start the exit animation
-            onDeleteStart();
-
+        onMutate: async () => {
             await queryClient.cancelQueries({
                 queryKey: ["tasks"],
             });
 
             const previousTasks =
-                queryClient.getQueryData<Task[]>(["tasks"]);
-
-            setTimeout(() => {
-                queryClient.setQueryData<Task[]>(
-                    ["tasks"],
-                    (old = []) =>
-                        old.filter((task) => task.id !== taskId)
-                );
-            }, 300);
+                queryClient.getQueryData<TaskType[]>(["tasks"]);
 
             return { previousTasks };
         },
 
-        onError: (_err, _variables, context) => {
+        onSuccess: () => {
+            queryClient.setQueryData<TaskType[]>(
+                ["tasks"],
+                (old = []) =>
+                    old.filter((task) => task.id !== taskId)
+            );
+        },
+
+        onError: (_error, _variables, context) => {
             if (context?.previousTasks) {
                 queryClient.setQueryData(
                     ["tasks"],
@@ -47,19 +44,16 @@ export default function TaskDelete({
                 );
             }
         },
-
-        onSettled: () => {
-            queryClient.invalidateQueries({
-                queryKey: ["tasks"],
-            });
-        },
     });
 
     return (
         <Button
             variant="outline"
             className="ml-10 font-heading"
-            onClick={() => deleteTaskMutation.mutate(taskId)}
+            onClick={() => {
+                onDeleteStart();
+                deleteTaskMutation.mutate(taskId);
+            }}
             disabled={deleteTaskMutation.isPending}
         >
             Delete

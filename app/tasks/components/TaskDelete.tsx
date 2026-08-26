@@ -1,38 +1,68 @@
-'use client'
-import { deleteTask } from "@/app/actions";
-import { useMutation, useQueries, useQueryClient } from "@tanstack/react-query";
-import { TaskType } from "@/db/schema";
-import { Button } from "@/components/ui/button"
-import { Task } from "@/app/types"
+"use client";
 
-export default function TaskDelete({ taskId }: { taskId: number }) {
+import { deleteTask } from "@/app/actions";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { Button } from "@/components/ui/button";
+import { Task } from "@/app/types";
+
+export default function TaskDelete({
+    taskId,
+    onDeleteStart,
+}: {
+    taskId: number;
+    onDeleteStart: () => void;
+}) {
     const queryClient = useQueryClient();
 
     const deleteTaskMutation = useMutation({
         mutationFn: deleteTask,
 
         onMutate: async (taskId) => {
-            await queryClient.cancelQueries({ queryKey: ["tasks"] });
+            // Start the exit animation
+            onDeleteStart();
 
-            const previousTasks = queryClient.getQueryData<Task[]>(["tasks"]);
+            await queryClient.cancelQueries({
+                queryKey: ["tasks"],
+            });
 
-            queryClient.setQueryData<Task[]>(["tasks"], (old = []) =>
-                old.filter((task) => task.id !== taskId)
-            );
+            const previousTasks =
+                queryClient.getQueryData<Task[]>(["tasks"]);
+
+            setTimeout(() => {
+                queryClient.setQueryData<Task[]>(
+                    ["tasks"],
+                    (old = []) =>
+                        old.filter((task) => task.id !== taskId)
+                );
+            }, 300);
 
             return { previousTasks };
         },
 
         onError: (_err, _variables, context) => {
             if (context?.previousTasks) {
-                queryClient.setQueryData(["tasks"], context.previousTasks);
+                queryClient.setQueryData(
+                    ["tasks"],
+                    context.previousTasks
+                );
             }
+        },
+
+        onSettled: () => {
+            queryClient.invalidateQueries({
+                queryKey: ["tasks"],
+            });
         },
     });
 
     return (
-        <Button variant="outline" className="ml-10 font-heading " onClick={() => deleteTaskMutation.mutate(taskId)}>
+        <Button
+            variant="outline"
+            className="ml-10 font-heading"
+            onClick={() => deleteTaskMutation.mutate(taskId)}
+            disabled={deleteTaskMutation.isPending}
+        >
             Delete
         </Button>
-    )
+    );
 }

@@ -14,6 +14,7 @@ body {
 
 @theme {
   --animate-task-in: task-in 400ms ease-out;
+  --animate-task-out: task-out 400ms ease-in;
 
   @keyframes task-in {
     from {
@@ -24,6 +25,18 @@ body {
     to {
       opacity: 1;
       transform: translateY(0) scale(1);
+    }
+  }
+
+  @keyframes task-out {
+    from {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    to {
+      opacity: 0;
+      transform: translateY(-10px) scale(0.95);
     }
   }
 }

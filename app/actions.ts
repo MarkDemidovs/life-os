@@ -15,7 +15,7 @@ export async function createTask(formData: FormData) {
     const { userId } = await auth.protect();
 
     const result = taskSchema.safeParse({
-        taskName: formData.get("taskName")
+        taskName: formData.get("taskName"),
     });
 
     if (!result.success) {
@@ -23,12 +23,16 @@ export async function createTask(formData: FormData) {
         throw new Error("Invalid task data");
     }
 
-    await db.insert(tasks).values({
-        taskName: result.data.taskName,
-        userId
-    })
-}
+    const [newTask] = await db
+        .insert(tasks)
+        .values({
+            taskName: result.data.taskName,
+            userId,
+        })
+        .returning();
 
+    return newTask;
+}
 export async function deleteTask(taskId: number) {
     const { userId } = await auth.protect();
 

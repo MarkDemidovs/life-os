@@ -7,7 +7,7 @@ export default function Task({ id, title, status }: { id: number, title: string,
             <p className={status ? "text-gray-400 line-through" : "text-gray-100 "}>{title}</p>
             <div className="pr-2">
                 <TaskCheckbox id={id} status={status} />
-                <TaskDelete />
+                <TaskDelete taskId={id} />
             </div>
         </div>
     );

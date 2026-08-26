@@ -3,11 +3,7 @@
 import { createTask } from "@/app/actions";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button"
-
-interface Task {
-    id: string | number;
-    taskName: string;
-}
+import { Task } from "@/app/types"
 
 export default function CreateTaskComponent() {
     const queryClient = useQueryClient();

@@ -29,7 +29,7 @@ export async function createTask(formData: FormData) {
     })
 }
 
-export async function deleteTask(taskId: string) {
+export async function deleteTask(taskId: number) {
     const { userId } = await auth.protect();
 
     const result = deleteTaskSchema.safeParse({

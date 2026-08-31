@@ -11,3 +11,7 @@ export const deleteTaskSchema = z.object({
 export const noteSchema = z.object({
   noteContent: z.string().max(500, "Note content is too long!")
 })
+
+export const deleteNoteSchema = z.object({
+  noteId: z.coerce.number().int().positive()
+})

@@ -1,6 +1,6 @@
 "use server"
 import { db } from "@/db";
-import { taskSchema, deleteTaskSchema, noteSchema } from "@/lib/schemas";
+import { taskSchema, deleteTaskSchema, noteSchema, deleteNoteSchema } from "@/lib/schemas";
 import { notes, tasks } from "@/db/schema";
 import { auth } from "@clerk/nextjs/server";
 import { eq, and, asc } from "drizzle-orm";
@@ -82,4 +82,24 @@ export async function createNote(formData: FormData) {
     }).returning();
 
     return newNote
+}
+
+export async function deleteNote(noteId: number) {
+    const { userId } = await auth.protect();
+    
+    const result = deleteNoteSchema.safeParse({
+        noteId
+    })
+    
+    if (!result.success) {
+        console.error(result.error);
+        throw new Error("Failed to Delete Note");
+    };
+
+    await db.delete(notes).where(
+        and(
+            eq(notes.id, Number(result.data.noteId)),
+            eq(notes.userId, userId)
+        )
+    )
 }

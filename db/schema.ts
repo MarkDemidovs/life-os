@@ -7,5 +7,11 @@ export const tasks = pgTable("tasks", {
     userId: text("user_id").notNull()
 })
 
+export const notes = pgTable("notes", {
+    id: serial("id").primaryKey(),
+    noteContent: text("noteContent").default("New Note"),
+    userId: text("userId").notNull()
+})
 
 export type TaskType = typeof tasks.$inferSelect;
+export type NoteType = typeof notes.$inferSelect;

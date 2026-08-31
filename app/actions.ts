@@ -1,7 +1,7 @@
 "use server"
 import { db } from "@/db";
 import { taskSchema, deleteTaskSchema } from "@/lib/schemas";
-import { tasks } from "@/db/schema";
+import { notes, tasks } from "@/db/schema";
 import { auth } from "@clerk/nextjs/server";
 import { eq, and, asc} from "drizzle-orm";
 
@@ -55,5 +55,11 @@ export async function deleteTask(taskId: number) {
 
 export async function changeStatus(id:number, isCompleted: boolean) {
     await db.update(tasks).set({ isCompleted }).where(eq(tasks.id, id));
-
 }
+
+export async function getNotes() {
+    const { userId } = await auth.protect();
+
+    return await db.select().from(notes).where(eq(notes.userId, userId)).orderBy(asc(notes.id));
+}
+

@@ -1,9 +1,9 @@
 "use server"
 import { db } from "@/db";
-import { taskSchema, deleteTaskSchema } from "@/lib/schemas";
+import { taskSchema, deleteTaskSchema, noteSchema } from "@/lib/schemas";
 import { notes, tasks } from "@/db/schema";
 import { auth } from "@clerk/nextjs/server";
-import { eq, and, asc} from "drizzle-orm";
+import { eq, and, asc } from "drizzle-orm";
 
 export async function getTasks() {
     const { userId } = await auth.protect();
@@ -53,7 +53,7 @@ export async function deleteTask(taskId: number) {
     );
 }
 
-export async function changeStatus(id:number, isCompleted: boolean) {
+export async function changeStatus(id: number, isCompleted: boolean) {
     await db.update(tasks).set({ isCompleted }).where(eq(tasks.id, id));
 }
 
@@ -61,5 +61,25 @@ export async function getNotes() {
     const { userId } = await auth.protect();
 
     return await db.select().from(notes).where(eq(notes.userId, userId)).orderBy(asc(notes.id));
+
 }
 
+export async function createNote(formData: FormData) {
+    const { userId } = await auth.protect();
+
+    const result = noteSchema.safeParse({
+        noteContent: formData.get("noteContent")
+    })
+
+    if (!result.success) {
+        console.error(result.error);
+        throw new Error("Invalid Note data")
+    }
+
+    const [newNote] = await db.insert(notes).values({
+        noteContent: result.data.noteContent,
+        userId
+    }).returning();
+
+    return newNote
+}

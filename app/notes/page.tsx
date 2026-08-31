@@ -1,7 +1,9 @@
 import { auth } from "@clerk/nextjs/server";
 import HomeButton from "@/components/ui/homebutton";
 import { db } from "@/db";
-import { notes } from "@/db/schema";import { eq } from "drizzle-orm";
+import { notes } from "@/db/schema";
+import { eq } from "drizzle-orm";
+import NoteWall from "./components/NoteWall";
 
 export default async function Notes() {
   const { userId } = await auth.protect();
@@ -11,9 +13,7 @@ export default async function Notes() {
     <>
     <HomeButton />
     <main className="w-full h-screen flex flex-col items-center justify-center">
-      <p>
-        youre in the notes page
-      </p>
+      <NoteWall initialNotes={initialNotes} />
     </main>
     </>
   );

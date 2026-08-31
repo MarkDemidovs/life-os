@@ -2,6 +2,7 @@
 import { getNotes } from "@/app/actions";
 import { NoteType } from "@/db/schema"
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import Note from "./Note";
 
 export default function NoteWall({initialNotes} : {initialNotes: NoteType[]}) {
     
@@ -16,7 +17,9 @@ export default function NoteWall({initialNotes} : {initialNotes: NoteType[]}) {
 
     return (
         <div>
-            <p>tba</p>
+            {notes.map((note) => (
+                <Note key={note.id} noteContent={note.noteContent ?? "No content"} />
+            ))} 
         </div>
     )
 }

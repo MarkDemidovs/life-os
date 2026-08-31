@@ -1,9 +1,12 @@
 import { auth } from "@clerk/nextjs/server";
 import HomeButton from "@/components/ui/homebutton";
+import { db } from "@/db";
+import { notes } from "@/db/schema";import { eq } from "drizzle-orm";
 
 export default async function Notes() {
-  await auth.protect();
+  const { userId } = await auth.protect();
 
+  const initialNotes = await db.select().from(notes).where(eq(notes.userId, userId));
   return (
     <>
     <HomeButton />

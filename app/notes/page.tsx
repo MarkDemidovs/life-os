@@ -12,7 +12,8 @@ export default async function Notes() {
   return (
     <>
     <HomeButton />
-    <main className="w-full h-screen flex flex-col items-center justify-center">
+
+    <main className="w-full h-full pt-24 px-6 py-6">
       <NoteWall initialNotes={initialNotes} />
     </main>
     </>

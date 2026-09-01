@@ -16,7 +16,7 @@ export default function NoteWall({initialNotes} : {initialNotes: NoteType[]}) {
     });
 
     return (
-        <div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
             {notes.map((note) => (
                 <Note key={note.id} noteContent={note.noteContent ?? "No content"} />
             ))} 

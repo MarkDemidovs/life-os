@@ -4,6 +4,7 @@ import { db } from "@/db";
 import { notes } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import NoteWall from "./components/NoteWall";
+import CreateNote from "./components/CreateNote";
 
 export default async function Notes() {
   const { userId } = await auth.protect();
@@ -14,6 +15,7 @@ export default async function Notes() {
     <HomeButton />
 
     <main className="w-full h-full pt-24 px-6 py-6">
+          <CreateNote />
       <NoteWall initialNotes={initialNotes} />
     </main>
     </>

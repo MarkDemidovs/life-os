@@ -9,7 +9,7 @@ export const tasks = pgTable("tasks", {
 
 export const notes = pgTable("notes", {
     id: serial("id").primaryKey(),
-    noteContent: text("noteContent").default("New Note"),
+    noteContent: text("noteContent").notNull().default("New Note"),
     userId: text("userId").notNull()
 })
 

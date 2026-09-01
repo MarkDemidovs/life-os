@@ -19,7 +19,8 @@ export default function CreateNote() {
     });
 
     return (
-        <form
+        <form 
+            className="mb-6 mt-2"
             onSubmit={(e) => {
                 e.preventDefault();
 

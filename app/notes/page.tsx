@@ -12,12 +12,12 @@ export default async function Notes() {
   const initialNotes = await db.select().from(notes).where(eq(notes.userId, userId));
   return (
     <>
-    <HomeButton />
+      <HomeButton />
 
-    <main className="w-full h-full pt-24 px-6 py-6">
-          <CreateNote />
-      <NoteWall initialNotes={initialNotes} />
-    </main>
+      <main className="w-full h-full pt-24 px-6 py-6">
+        <CreateNote />
+        <NoteWall initialNotes={initialNotes} />
+      </main>
     </>
   );
 }

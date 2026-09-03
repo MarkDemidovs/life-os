@@ -102,4 +102,6 @@ export async function deleteNote(noteId: number) {
             eq(notes.userId, userId)
         )
     )
+    
+    
 }

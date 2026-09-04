@@ -1,6 +1,5 @@
 import { auth } from "@clerk/nextjs/server";
 import HomeButton from "@/components/ui/homebutton";
-
 export default async function Habits() {
   await auth.protect();
 

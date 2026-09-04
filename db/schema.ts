@@ -1,4 +1,4 @@
-import { pgTable, serial, text, boolean } from "drizzle-orm/pg-core";
+import { pgTable, serial, text, boolean, integer } from "drizzle-orm/pg-core";
 
 export const tasks = pgTable("tasks", {
     id: serial("id").primaryKey(),
@@ -13,5 +13,13 @@ export const notes = pgTable("notes", {
     userId: text("userId").notNull()
 })
 
+export const habits = pgTable("habits", {
+    id: serial("id").primaryKey(),
+    habitName: text("habitName").notNull().default("New habit"),
+    streak: integer("streak").notNull().default(0),
+    dateCreated: text("dateCreated").notNull().default(new Date().toISOString()),
+    userId: text("userId").notNull()
+
+})
 export type TaskType = typeof tasks.$inferSelect;
 export type NoteType = typeof notes.$inferSelect;

@@ -3,7 +3,7 @@ import { db } from "@/db";
 import { taskSchema, deleteTaskSchema, noteSchema, deleteNoteSchema, habitSchema } from "@/lib/schemas";
 import { habits, notes, tasks } from "@/db/schema";
 import { auth } from "@clerk/nextjs/server";
-import { eq, and, asc } from "drizzle-orm";
+import { eq, and, asc, sql } from "drizzle-orm";
 
 export async function getTasks() {
     const { userId } = await auth.protect();
@@ -127,4 +127,20 @@ export async function createHabit(formData: FormData) {
     const [newTask] = await db.insert(habits).values({ habitName: result.data.habitname, userId }).returning();
 
     return newTask;
+} 
+
+export async function increaseStreak(habitId: number) {
+    const { userId } = await auth.protect();
+
+    const [newStreak] = await db.update(habits).set({ streak: sql`${habits.streak}+1`}).where(and(eq(habits.id, habitId), eq(habits.userId, userId))).returning()
+
+    return newStreak;
+}
+
+export async function resetStreak(habitId: number) {
+    const { userId } = await auth.protect();
+
+    const [resettedStreak] = await db.update(habits).set({streak: 0}).where(and(eq(habits.id, habitId), eq(habits.userId, userId))).returning();
+
+    return resettedStreak;
 }

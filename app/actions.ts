@@ -1,7 +1,7 @@
 "use server"
 import { db } from "@/db";
-import { taskSchema, deleteTaskSchema, noteSchema, deleteNoteSchema } from "@/lib/schemas";
-import { notes, tasks } from "@/db/schema";
+import { taskSchema, deleteTaskSchema, noteSchema, deleteNoteSchema, habitSchema } from "@/lib/schemas";
+import { habits, notes, tasks } from "@/db/schema";
 import { auth } from "@clerk/nextjs/server";
 import { eq, and, asc } from "drizzle-orm";
 
@@ -104,4 +104,27 @@ export async function deleteNote(noteId: number) {
     )
     
     
+}
+
+export async function getHabits() {
+    const { userId } = await auth.protect();
+
+    return await db.select().from(habits).where(eq(habits.userId, userId));
+}
+
+export async function createHabit(formData: FormData) {
+    const { userId } = await auth.protect();
+
+    const result = habitSchema.safeParse({
+        habitName: formData.get("habitName")
+    });
+
+    if (!result.success) {
+        console.error(result.error);
+        throw new Error("Invalid habit name!");
+    }
+
+    const [newTask] = await db.insert(habits).values({ habitName: result.data.habitname, userId }).returning();
+
+    return newTask;
 }

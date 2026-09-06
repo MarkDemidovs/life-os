@@ -124,7 +124,11 @@ export async function createHabit(formData: FormData) {
         throw new Error("Invalid habit name!");
     }
 
-    const [newTask] = await db.insert(habits).values({ habitName: result.data.habitname, userId }).returning();
+    const [newTask] = await db.insert(habits).values({
+        habitName: result.data.habitname,
+        userId,
+        lastCompleted: new Date().toLocaleDateString("en-CA"),
+    }).returning();
 
     return newTask;
 } 
@@ -135,7 +139,13 @@ export async function increaseStreak(habitId: number) {
     const [newStreak] = await db.update(habits).set({ streak: sql`${habits.streak}+1`}).where(and(eq(habits.id, habitId), eq(habits.userId, userId))).returning()
     
     const today = new Date().toLocaleDateString("en-CA");
-
+    await db.update(habits).set({ lastCompleted: today }).where(
+        and(
+            eq(habits.id, habitId),
+            eq(habits.userId, userId)
+        )
+    );
+    
 
     return newStreak;
 }

@@ -133,6 +133,9 @@ export async function increaseStreak(habitId: number) {
     const { userId } = await auth.protect();
 
     const [newStreak] = await db.update(habits).set({ streak: sql`${habits.streak}+1`}).where(and(eq(habits.id, habitId), eq(habits.userId, userId))).returning()
+    
+    const today = new Date().toLocaleDateString("en-CA");
+
 
     return newStreak;
 }

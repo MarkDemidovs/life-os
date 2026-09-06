@@ -19,7 +19,7 @@ export const habits = pgTable("habits", {
     streak: integer("streak").notNull().default(0),
     dateCreated: text("dateCreated").notNull().default(new Date().toISOString()),
     userId: text("userId").notNull(),
-    lastCompleted: text("lastCompleted").notNull().default(new Date().toISOString())
+    lastCompleted: text("lastCompleted").notNull()
 })
 export type TaskType = typeof tasks.$inferSelect;
 export type NoteType = typeof notes.$inferSelect;

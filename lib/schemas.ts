@@ -19,3 +19,7 @@ export const deleteNoteSchema = z.object({
 export const habitSchema = z.object({
   habitname: z.string().max(100, "Habit name is too long.")
 })
+
+export const deleteHabitSchema = z.object({
+  habitId: z.coerce.number().int().positive()
+})

@@ -4,6 +4,7 @@ import { taskSchema, deleteTaskSchema, noteSchema, deleteNoteSchema, habitSchema
 import { habits, notes, tasks } from "@/db/schema";
 import { auth } from "@clerk/nextjs/server";
 import { eq, and, asc, sql } from "drizzle-orm";
+import { calculateStreak } from "@/lib/streaks";
 
 export async function getTasks() {
     const { userId } = await auth.protect();
@@ -132,6 +133,38 @@ export async function createHabit(formData: FormData) {
 
     return newTask;
 } 
+
+
+export async function handleStreak(habitId: number) {
+  const { userId } = await auth.protect();
+
+  const [habit] = await db
+    .select({
+      lastCompleted: habits.lastCompleted,
+      streak: habits.streak,
+    })
+    .from(habits)
+    .where(
+      and(
+        eq(habits.userId, userId),
+        eq(habits.id, habitId)
+      )
+    );
+
+  if (!habit) return;
+
+  const newStreak = await calculateStreak(
+    habit.lastCompleted,
+    habit.streak,
+    new Date().toISOString()
+  );
+
+  if (newStreak) {
+    increaseStreak(habitId);
+  } else if (!newStreak) {
+    resetStreak(habitId)
+  }
+}
 
 export async function increaseStreak(habitId: number) {
     const { userId } = await auth.protect();

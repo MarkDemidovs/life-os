@@ -1,15 +1,22 @@
-export function calculateStreak(lastCompleted: string, streak: number, currentDate: string): number {
-    const lastCompletedObj = new Date(lastCompleted);
-    const currentDateObj = new Date(currentDate);
+export function calculateStreak(
+  lastCompleted: string,
+  streak: number,
+  currentDate: string
+): number {
+  const last = new Date(lastCompleted);
+  const current = new Date(currentDate);
 
-    const diffTime = currentDateObj.getTime() - lastCompletedObj.getTime();
-    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+  last.setHours(0, 0, 0, 0);
+  current.setHours(0, 0, 0, 0);
 
-    if (diffDays === 1) {
-        return streak + 1;
-    } else if (diffDays > 1) {
-        return 0;
-    } else {
-        return streak;
-    }
+  const diffTime = current.getTime() - last.getTime();
+  const diffDays = diffTime / (1000 * 60 * 60 * 24);
+
+  if (diffDays === 1) {
+    return 1;
+  } else if (diffDays > 1) {
+    return 0;
+  }
+
+  return streak;
 }

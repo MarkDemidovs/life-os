@@ -2,7 +2,7 @@ export function calculateStreak(
   lastCompleted: string,
   streak: number,
   currentDate: string
-): number {
+): "increment" | "reset" | "noChange" {
   const last = new Date(lastCompleted);
   const current = new Date(currentDate);
 

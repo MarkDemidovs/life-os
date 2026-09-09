@@ -13,10 +13,10 @@ export function calculateStreak(
   const diffDays = diffTime / (1000 * 60 * 60 * 24);
 
   if (diffDays === 1) {
-    return 1;
+    return "increment";
   } else if (diffDays > 1) {
-    return 0;
+    return "reset";
   }
 
-  return streak;
+  return "noChange";
 }

@@ -23,3 +23,4 @@ export const habits = pgTable("habits", {
 })
 export type TaskType = typeof tasks.$inferSelect;
 export type NoteType = typeof notes.$inferSelect;
+export type HabitType = typeof habits.$inferSelect;

@@ -2,10 +2,11 @@ import { auth } from "@clerk/nextjs/server";
 import HomeButton from "@/components/ui/homebutton";
 import { habits } from "@/db/schema";
 import { db } from "@/db";
+
 export default async function Habits() {
   await auth.protect();
-  const initialHabits = await db.select().from(habits).orderBy(asc(habits.id));
-
+  const initialHabits = await db.select().from(habits);
+  
   return (
     <>
     <HomeButton />

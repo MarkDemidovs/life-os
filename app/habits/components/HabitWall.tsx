@@ -1,6 +1,7 @@
 import { getHabits } from "@/app/actions";
 import { HabitType } from "@/db/schema";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import Habit from "./Habit";
 export default function HabitWall({
     initialHabits,
 }: {
@@ -18,7 +19,11 @@ export default function HabitWall({
     return (
         <div>
             {habits.map((habit) => (
-                <p>tba</p>
+                <Habit
+                    id={habit.id}
+                    habitName={habit.habitName}
+                    streak={habit.streak}
+                />
             ))}
         </div>
     );

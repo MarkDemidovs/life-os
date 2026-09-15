@@ -1,3 +1,4 @@
+"use client"
 import { getHabits } from "@/app/actions";
 import { HabitType } from "@/db/schema";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -17,9 +18,10 @@ export default function HabitWall({
         staleTime: 1000 * 60,
     });
     return (
-        <div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
             {habits.map((habit) => (
                 <Habit
+                    key={habit.id}
                     id={habit.id}
                     habitName={habit.habitName}
                     streak={habit.streak}

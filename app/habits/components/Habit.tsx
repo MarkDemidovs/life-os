@@ -1,3 +1,8 @@
 export default function Habit({id, habitName, streak, }: {id: number; habitName: string; streak: number; }) {
-    return 0;
+    return (
+        <div>
+            <p>{habitName}</p>
+            <p>{streak}</p>
+        </div>
+    )
 }

@@ -120,13 +120,16 @@ export async function createHabit(formData: FormData) {
         habitName: formData.get("habitName")
     });
 
+            console.log(formData.get("habitName"))
+
+
     if (!result.success) {
         console.error(result.error);
         throw new Error("Invalid habit name!");
     }
 
     const [newTask] = await db.insert(habits).values({
-        habitName: result.data.habitname,
+        habitName: result.data.habitName,
         userId,
         lastCompleted: new Date().toLocaleDateString("en-CA"),
     }).returning();

@@ -3,6 +3,7 @@ import HomeButton from "@/components/ui/homebutton";
 import { habits } from "@/db/schema";
 import { db } from "@/db";
 import HabitsWall from "./components/HabitWall";
+import CreateHabit from "./components/CreateHabit";
 
 export default async function Habits() {
   await auth.protect();
@@ -13,6 +14,7 @@ export default async function Habits() {
       <HomeButton />
       <main className="w-full h-full pt-24 px-6 py-6">
         <HabitsWall initialHabits={initialHabits} />
+      <CreateHabit />
       </main>
     </>
   );

@@ -156,17 +156,21 @@ export async function handleStreak(habitId: number) {
 
   if (!habit) return;
 
-  const newStreak = await calculateStreak(
+  const newStreak = calculateStreak(
     habit.lastCompleted,
     habit.streak,
     new Date().toISOString()
   );
 
-  if (newStreak) {
-    increaseStreak(habitId);
-  } else if (!newStreak) {
-    resetStreak(habitId)
+  if (newStreak === "increment") {
+    return increaseStreak(habitId);
   }
+
+  if (newStreak === "reset") {
+    return resetStreak(habitId);
+  }
+
+  return habit;
 }
 
 export async function increaseStreak(habitId: number) {

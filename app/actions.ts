@@ -159,7 +159,7 @@ export async function handleStreak(habitId: number) {
   const newStreak = calculateStreak(
     habit.lastCompleted,
     habit.streak,
-    new Date().toISOString()
+        new Date().toLocaleDateString("en-CA")
   );
 
   if (newStreak === "increment") {
@@ -193,7 +193,10 @@ export async function increaseStreak(habitId: number) {
 export async function resetStreak(habitId: number) {
     const { userId } = await auth.protect();
 
-    const [resettedStreak] = await db.update(habits).set({streak: 0}).where(and(eq(habits.id, habitId), eq(habits.userId, userId))).returning();
+    const [resettedStreak] = await db.update(habits).set({
+        streak: 1,
+        lastCompleted: new Date().toLocaleDateString("en-CA"),
+    }).where(and(eq(habits.id, habitId), eq(habits.userId, userId))).returning();
 
     return resettedStreak;
 }

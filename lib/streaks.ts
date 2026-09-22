@@ -16,6 +16,8 @@ export function calculateStreak(
     return "increment";
   } else if (diffDays > 1) {
     return "reset";
+  } else if (diffDays === 0 && streak === 0) {
+    return "increment";
   }
 
   return "noChange";

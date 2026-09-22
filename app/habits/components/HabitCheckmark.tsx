@@ -18,7 +18,8 @@ export default function HabitCheckmark({ id }: { id: number }) {
             type="checkbox"
             aria-label="Mark habit as completed"
             disabled={handleCheckmark.isPending}
-            onChange={() => handleCheckmark.mutate()}
+            onChange={() =>
+            handleCheckmark.mutate()}
         />
     );
 }

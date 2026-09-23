@@ -1,15 +1,13 @@
 "use client"
 import { getHabits } from "@/app/actions";
 import { HabitType } from "@/db/schema";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import Habit from "./Habit";
 export default function HabitWall({
     initialHabits,
 }: {
     initialHabits: HabitType[];
 }) {
-
-    const queryClient = useQueryClient();
 
     const { data: habits } = useQuery({
         queryKey: ["habits"],
@@ -25,6 +23,7 @@ export default function HabitWall({
                     id={habit.id}
                     habitName={habit.habitName}
                     streak={habit.streak}
+                    lastCompleted={habit.lastCompleted}
                 />
             ))}
         </div>

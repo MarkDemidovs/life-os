@@ -4,7 +4,7 @@ import { taskSchema, deleteTaskSchema, noteSchema, deleteNoteSchema, habitSchema
 import { habits, notes, tasks } from "@/db/schema";
 import { auth } from "@clerk/nextjs/server";
 import { eq, and, asc, sql } from "drizzle-orm";
-import { calculateStreak } from "@/lib/streaks";
+import { calculateStreak, formatCalendarDate } from "@/lib/streaks";
 
 export async function getTasks() {
     const { userId } = await auth.protect();
@@ -131,7 +131,7 @@ export async function createHabit(formData: FormData) {
     const [newTask] = await db.insert(habits).values({
         habitName: result.data.habitName,
         userId,
-        lastCompleted: new Date().toLocaleDateString("en-CA"),
+        lastCompleted: formatCalendarDate(),
     }).returning();
 
     return newTask;
@@ -159,7 +159,7 @@ export async function handleStreak(habitId: number) {
   const newStreak = calculateStreak(
     habit.lastCompleted,
     habit.streak,
-        new Date().toLocaleDateString("en-CA")
+        formatCalendarDate()
   );
 
   if (newStreak === "increment") {
@@ -175,16 +175,12 @@ export async function handleStreak(habitId: number) {
 
 export async function increaseStreak(habitId: number) {
     const { userId } = await auth.protect();
+    const today = formatCalendarDate();
 
-    const [newStreak] = await db.update(habits).set({ streak: sql`${habits.streak}+1`}).where(and(eq(habits.id, habitId), eq(habits.userId, userId))).returning()
-    
-    const today = new Date().toLocaleDateString("en-CA");
-    await db.update(habits).set({ lastCompleted: today }).where(
-        and(
-            eq(habits.id, habitId),
-            eq(habits.userId, userId)
-        )
-    );
+    const [newStreak] = await db.update(habits).set({
+        streak: sql`${habits.streak}+1`,
+        lastCompleted: today,
+    }).where(and(eq(habits.id, habitId), eq(habits.userId, userId))).returning()
     
 
     return newStreak;
@@ -195,7 +191,7 @@ export async function resetStreak(habitId: number) {
 
     const [resettedStreak] = await db.update(habits).set({
         streak: 1,
-        lastCompleted: new Date().toLocaleDateString("en-CA"),
+        lastCompleted: formatCalendarDate(),
     }).where(and(eq(habits.id, habitId), eq(habits.userId, userId))).returning();
 
     return resettedStreak;
